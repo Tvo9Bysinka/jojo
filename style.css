@@ -1,13 +1,14 @@
 #Form{
-	border:10px;
-	border-radius:5px;
-	background-color:#A9A9A9;
-	width:450px;
-	height:550px;
-	border-color:black;
-	margin:auto;
-	padding:5px;
-	padding-left:5px;
+border:10px;
+border-radius:5px;
+background-color:#e94e90;
+height:550px;	
+width:450px;
+margin:auto;
+padding:5px;
+padding-left:5px;	
+border-color:black;
+	
 }
 body {
     background-image: url("1oI_fVxbMJc.jpg");
@@ -15,7 +16,7 @@ body {
 #events{
 	border-radius:10px;
 	border-color:black;
-	background-color:blue;
+	background-color:pink;
 	text-align:center;
 	color:white;
 }
