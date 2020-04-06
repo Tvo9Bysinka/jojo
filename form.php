@@ -28,7 +28,7 @@
                         $name=$values['name'];
                     }
                     ?>
-					Name:<input maxlength="25" size="40" name="name" placeholder="First name" class="<?php print $ERROR?>" value="<?php print $name?>">
+					Im9:<input maxlength="25" size="40" name="name" placeholder="First name" class="<?php print $ERROR?>" value="<?php print $name?>">
 				</div>
                 </br>
 				<div id="address">
@@ -53,7 +53,7 @@
                         print($messages['year']);
                         $ERROR='error';
                     } ?>
-                    Year of Birth:
+                    God rojdeni9:
                     <span class="<?php print $ERROR?>">
                         <select name="year" size="1">
                             <?php
@@ -81,9 +81,9 @@
                         print($messages['sex']);
                         $ERROR='error';
                     }?>
-                Sex:    <span class="<?php print $ERROR?>">
-                            <input type="radio" value="M" name="sex"<?php if($values['sex']=='M') {print'checked';}?> >Man
-                            <input type="radio" value="F" name="sex"<?php if($values['sex']=='F') {print'checked';}?> >Female
+                Pol:   <span class="<?php print $ERROR?>">
+                            <input type="radio" value="M" name="sex"<?php if($values['sex']=='M') {print'checked';}?> >Myjchina
+                            <input type="radio" value="F" name="sex"<?php if($values['sex']=='F') {print'checked';}?> >Devka
                     </span>
                 </div>
                 </br>
@@ -95,7 +95,7 @@
                         $ERROR='error';
                     }
                     ?>
-                    Limbs:<?php
+                    Konechnosti:<?php
                     $select_limbs=array(1=>'',2=>'',2=>'',3=>'',4=>'');
                     for($s=1;$s<=4;$s++){
                         if($values['limbs']==$s){
@@ -120,7 +120,7 @@
                         $ERROR='error';
                     }?>
                     <span >
-                        Superpowers:</br>
+                        SuperSila:</br>
                         <?php
                          if(!empty($values['sverh'])){
                              $flag=FALSE;
@@ -159,7 +159,7 @@
                         }
                         ?>
                         <p class="<?php print $ERROR?>" >
-                            <textarea cols="45" name="biography" placeholder="Here is your brief biography..."><?php if($values['biography']){print $values['biography'];} ?></textarea>
+                            <textarea cols="45" name="biography" placeholder="Tyt doljna bit biogrifi9 no ee net...Pochemy?!"><?php if($values['biography']){print $values['biography'];} ?></textarea>
                         </p>
                     </div>
                 </br>
@@ -171,7 +171,7 @@
                         $ERROR='error';
                     }
                     ?>
-                    <span class="<?php print $ERROR?>" >Do you agree that you are selling your soul to the devil?
+                    <span class="<?php print $ERROR?>" >Esli Lubish Mamo4ky to postav galo4ky:
 					    <input type="checkbox" name="consent"  value="yes" <?php if($values['consent']=='yes') {print'checked';}?> >
                     </span>
                 </div>
