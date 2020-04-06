@@ -83,7 +83,7 @@
                     }?>
                 Pol:   <span class="<?php print $ERROR?>">
                             <input type="radio" value="M" name="sex"<?php if($values['sex']=='M') {print'checked';}?> >Myjchina
-                            <input type="radio" value="F" name="sex"<?php if($values['sex']=='F') {print'checked';}?> >Devka
+                            <input type="radio" value="F" name="sex"<?php if($values['sex']=='F') {print'checked';}?> >Femka
                     </span>
                 </div>
                 </br>
