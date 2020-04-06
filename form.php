@@ -8,7 +8,7 @@
 	<body>
 		<div id="Form">
 			<div id="events">
-				<p>Please fill out the form</p>
+				<p>Zapoln9q Formy ti yyyyyyyyy</p>
 			</div>
 			<form method="post" action="index.php" name="contract" >
                 <?php
