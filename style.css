@@ -1,6 +1,7 @@
 #Form{
 border:10px;
 border-radius:5px;
+align-content: center;
 background-color:#e94e9052;
 height:550px;	
 width:450px;
@@ -19,4 +20,7 @@ body {
 	background-color:pink;
 	text-align:center;
 	color:white;
+}
+.error{
+	border: 2px solid red;
 }
