@@ -1,86 +1,201 @@
 <?php
 header('Content-Type:text/html;charset=UTF-8');
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-  if (!empty($_GET['save'])) {
-    print('Спасибо, результаты сохранены.');
-  }
-  include('form.php');
-  exit();
-}
-$errors = FALSE;
-$name = $_POST["name"];
-$email = $_POST["email"];
-$year = $_POST["year"];
-$sex =	$_POST["sex"];
-$flag=FALSE;
-$limbs = $_POST["limbs"];
-$bio = $_POST["biography"];	
-$consent = $_POST["consent"];
-
-if (empty($name)) {
-  echo	"Укажите имя.<br/>";
-  $errors = TRUE;
-}else if(!preg_match("#^[aA-zZ0-9\-_]+$#",$_POST["name"])){
-	print('Недопустимые символы.<br/>');
-	$errors=TRUE;
-}
-if (empty($email)){
-	echo "Укажите адрес.<br/>";
-	$errors = TRUE;
-}
-if	(empty($year)){
-	echo "Укажите год рождения.<br/>";
-	$errors = TRUE;
-}
-if	(empty($_POST["sex"])){
-	echo "Укажите пол.<br/>";
-	$errors	= TRUE;
-}
-if	(empty($_POST["limbs"])){
-	echo "Укажите кол-во конечностей.<br/>";
-	$errors	= TRUE;	
-}
-$Sverh = $_POST["sverh"];
-  if(!isset($Sverh))
-  {
-    echo("<p>Вы не выбрали способности</p>\n");
-  }
-  else
-  {	echo"Ваши способности:<br/>";
-    for($i=0; $i < count($Sverh); $i++)
-    {
-		if($Sverh[$i]=="net")$flag=TRUE;
+    $messages=array();
+    $errors = array();
+    $values = array();
+    if (!empty($_COOKIE['save'])) {
+        setcookie('save', '', 100000);
+        $messages['save'] = 'Спасибо, результаты сохранены.';
     }
-  }
- if($flag){
-	 for($t=0;$t<count($Sverh);$t++){
-		 if($Sverh[$t]!="net")unset($Sverh[$t]);
-	 }
- }else if(!empty($Sverh)){
-	 for($y=0;$y<count($Sverh);$y++){
-		echo"$Sverh[$y]<br/>";
-	}
- }
- $sverh_separated=implode(' ',$Sverh);
-if	(empty($_POST["biography"])){
-	echo "Не заполнена биография.<br/>";
-	$errors	= TRUE;
+$errors = FALSE;
+$flag=FALSE;
+$sverh_separated='';
+    $errors['name'] = !empty($_COOKIE['name_error']);
+    $errors['email'] = !empty($_COOKIE['email_error']);
+    $errors['year'] = !empty($_COOKIE['year_error']);
+    $errors['sex'] = !empty($_COOKIE['sex_error']);
+    $errors['limbs'] = !empty($_COOKIE['limbs_error']);
+    $errors['sverh'] = !empty($_COOKIE['sverh_error']);
+    $errors['consent'] = !empty($_COOKIE['consent_error']);
+    $errors['biography'] = !empty($_COOKIE['biography_error']);
+    if ($errors['name']) {
+        if($_COOKIE['name_error']=='none'){
+            setcookie('name_error','',100000);
+            $messages['name'] = '<div class="error">Заполните имя.</div>';
+    }
+    if($_COOKIE['name_error']=='Unacceptable symbols'){
+            setcookie('name_error','',100000);
+            $messages['name'] = '<div class="error">Недопустимые символы в имени:а-я,А-Я,0-9,\ - _ </div>';
+    }
 }
-if	(empty($_POST["consent"])){
-	echo "Вы не согласились с условиями контракта.<br/>";
-	$errors	= TRUE;	
+    if ($errors['email']) {
+        if($_COOKIE['email_error']=='none'){
+            setcookie('email_error','',100000);
+            $messages['email'] = '<div class="error">Укажите почту.</div>';
+        }
+        if($_COOKIE['email_error']=='invalid address'){
+            setcookie('email_error','',100000);
+            $messages['email'] = '<div class="error">Почта указана некорректно.Пример:email@yandex.ru</div>';
+        }
+    }
+    if($errors['year']){
+        setcookie('year_error','',100000);
+        $messages['year'] = '<div class="error">Укажите год рождения</div>';
 }
+    if($errors['sex']){
+            setcookie('sex_error','',100000);
+            $messages['sex'] = '<div class="error">Укажите пол</div>';
+    }
+    if ($errors['limbs']) {
+        setcookie('limbs_error','',100000);
+        $messages['limbs'] = '<div class="error">Укажите количество конечностей</div>';
+    }
+    if($errors['sverh']){
+        if($_COOKIE['sverh_error']=="none"){
+            setcookie('sverh_error','',100000);
+            $messages['sverh'] = '<div class="error">Выберите способности</div>';
+        }
+        if($_COOKIE['sverh_error']=="noneselected"){
+            setcookie('sverh_error','',100000);
+            $messages['sverh'] = '<div class="error">Вы создали противоречие самому себе.Уберите "None" и побробуйте ещё раз.</div>';
+        }
+    }
+    if ($errors['biography']) {
+            setcookie('biography_error','',100000);
+            $messages['biography'] = '<div class="error">Заполните биографию</div>';
 
-if($errors){
-	exit();
+    }
+    if($errors['consent']){
+        setcookie('consent_error','',100000);
+        $messages['consent'] = '<div class="error">Вы не согласились с контрактом</div>';
+    }
+
+    $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
+    $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
+    $values['year'] = empty($_COOKIE['year_value']) ? '' : $_COOKIE['year_value'];
+    $values['sex'] = empty($_COOKIE['sex_value']) ? '' : $_COOKIE['sex_value'];
+    $values['limbs'] = empty($_COOKIE['limbs_value']) ? '' : $_COOKIE['limbs_value'];
+    $values['sverh'] = empty($_COOKIE['sverh_value']) ? '' : $_COOKIE['sverh_value'];
+    $values['biography'] = empty($_COOKIE['biography_value']) ? '' : $_COOKIE['biography_value'];
+    $values['consent'] = empty($_COOKIE['consent_value']) ? '' : $_COOKIE['consent_value'];
+include('form.php');
 }
+else {
+    /*Проверяем на ошибки*/
+    $errors = FALSE;
+    if (empty($_POST['name'])) {
+        setcookie('name_error', 'none', time() + 24 * 60 * 60);
+        setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
+        $errors = TRUE;
+    }
+    else {
+        if (!preg_match("#^[aA-zZ0-9\-_]+$#",$_POST['name'])){
+            setcookie('name_error', 'Unacceptable symbols', time() + 24 * 60 * 60);
+            setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
+            $errors=TRUE;
+        }else{
+            setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
+        }
+    }
+    if (empty($_POST['email'])) {
+        setcookie('email_error', 'none', time() + 24 * 60 * 60);
+        setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
+        $errors = TRUE;
+    }else{
+        if (!preg_match("/^(?:[a-z0-9]+(?:[-_.]?[a-z0-9]+)?@[a-z0-9_.-]+(?:\.?[a-z0-9]+)?\.[a-z]{2,10})$/i", $_POST['email'])) {
+            setcookie('email_error', 'invalid address', time() + 24 * 60 * 60);
+            setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
+            $errors = TRUE;
+        }else{
+            setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
+        }
+    }
+    if (empty($_POST['year'])) {
+        setcookie('year_error', 'none', time() + 24 * 60 * 60);
+        setcookie('year_value', $_POST['year'], time() + 30 * 24 * 60 * 60);
+        $errors = TRUE;
+    }else{
+        setcookie('year_value', $_POST['year'], time() + 30 * 24 * 60 * 60);
+    }
+    if (empty($_POST['sex'])) {
+        setcookie('sex_error', 'none', time() + 24 * 60 * 60);
+        setcookie('sex_value', $_POST['sex'], time() + 30 * 24 * 60 * 60);
+        $errors = TRUE;
+    }else{
+        setcookie('sex_value', $_POST['sex'], time() + 30 * 24 * 60 * 60);
+    }
+    if (empty($_POST['limbs'])) {
+        setcookie('limbs_error', 'none', time() + 24 * 60 * 60);
+        setcookie('limbs_value', $_POST['limbs'], time() + 30 * 24 * 60 * 60);
+        $errors = TRUE;
+    }else{
+        setcookie('limbs_value', $_POST['limbs'], time() + 30 * 24 * 60 * 60);
+    }
+    if(!isset($_POST['sverh'])){
+        setcookie('sverh_error', 'none', time() + 24 * 60 * 60);
+        setcookie('sverh_value', serialize($_POST['sverh']), time() + 30 * 24 * 60 * 60);
+        $errors = TRUE;
+    }else{
+        $sverh_mass=$_POST['sverh'];
+        $flag=FALSE;
+        for($w=0;$w<count($sverh_mass);$w++){
+            if($sverh_mass[$w]=="net"){
+                $flag=TRUE;break;
+            }
+        }
+        if($flag && count($sverh_mass)!=1){
+            setcookie('sverh_error', 'noneselected', time() + 24 * 60 * 60);
+            setcookie('sverh_value',serialize($_POST['sverh']), time() + 30 * 24 * 60 * 60);
+            $errors = TRUE;
+        }else{
+            setcookie('sverh_value',serialize($_POST['sverh']), time() + 30 * 24 * 60 * 60);
+        }
+    }
+    if (empty($_POST['biography'])) {
+        setcookie('biography_error', 'none', time() + 24 * 60 * 60);
+        setcookie('biography_value', $_POST['biography'], time() + 30 * 24 * 60 * 60);
+        $errors = TRUE;
+    }else{
+        setcookie('biography_value', $_POST['biography'], time() + 30 * 24 * 60 * 60);
+    }
+    if (empty($_POST['consent'])) {
+        setcookie('consent_error', 'none', time() + 24 * 60 * 60);
+        setcookie('consent_value', $_POST['consent'], time() + 30 * 24 * 60 * 60);
+        $errors = TRUE;
+    }else{
+        setcookie('consent_value', $_POST['consent'], time() + 30 * 24 * 60 * 60);
+    }
+    if ($errors) {
+        header('Location:index.php');
+        exit();
+    }
+    else {
+        setcookie('name_error', '', 100000);setcookie('limbs_error', '', 100000);
+        setcookie('email_error', '', 100000);setcookie('sverh_error', '', 100000);
+        setcookie('year_error', '', 100000);setcookie('biography_error', '', 100000);
+        setcookie('sex_error', '', 100000);setcookie('consent_error', '', 100000);
+    }
+
+/*запись в бд*/
+    if(!empty($_POST['sverh'])){
+        $sverh_mass=$_POST['sverh'];
+        for($w=0;$w<count($sverh_mass);$w++){
+            if($flag){
+                if($sverh_mass[$w]!="net")unset($sverh_mass[$w]);
+                $sverh_separated=implode(' ',$sverh_mass);
+            }else{
+                $sverh_separated=implode(' ',$sverh_mass);
+            }
+        }
+    }
 $user = 'u17370';
 $pass = '1557012';
 $db = new PDO('mysql:host=localhost;dbname=u17370', $user, $pass,
 array(PDO::ATTR_PERSISTENT => true));
 try {
- $stmt = $db->prepare("INSERT INTO application (name, email, birth, sex, limbs, sverh, bio,consent) 
- VALUES (:name, :email, :birth, :sex, :limbs, :birth,:bio, :consent)");
+ $stmt = $db->prepare("INSERT INTO application (name, email, birth, sex, limbs,sverh,bio,consent) 
+ VALUES (:name, :email, :birth, :sex, :limbs,:sverh,:bio, :consent)");
 $stmt->bindParam(':name', $name_db);
 $stmt->bindParam(':email', $email_db);
 $stmt->bindParam(':birth', $year_db);
@@ -103,5 +218,6 @@ catch(PDOException $e){
   print('Error : ' . $e->getMessage());
   exit();
 }
-header('Location: ?save=1');
+setcookie('save', '1');
+header('Location: index.php');}
 ?>
