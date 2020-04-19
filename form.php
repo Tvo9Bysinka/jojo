@@ -2,16 +2,19 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>ThE FoRm</title>
+		<title>Form</title>
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
-		<div id="Form">
+		<div class="Form">
 			<div id="events">
 				<p>Zapoln9q Formy ti yyyyyyyyy</p>
 			</div>
 			<form method="post" action="index.php" name="contract" >
                 <?php
+                if(!empty($messages['login_and_password'])){
+                    print($messages['login_and_password']);
+                }
                 if (!empty($messages['save'])) {
                     print($messages['save']);
                 }
@@ -31,7 +34,7 @@
 					Im9:<input maxlength="25" size="40" name="name" placeholder="First name" class="<?php print $ERROR?>" value="<?php print $name?>">
 				</div>
                 </br>
-				<div id="address">
+			<div id="address">
                     <?php
                     $ERROR='';
                     $email='';
@@ -43,7 +46,7 @@
                         $email=$values['email'];
                     }
                     ?>
-					Email:<input name="email" value="<?php print $email?>" class="<?php print $ERROR?>" placeholder="email@yandex.ru">
+					Email:<input name="email" value="<?php print $email?>" class="<?php print $ERROR?>" placeholder="email@mail.ru">
 				</div>
                 </br>
 				<div id="BIRTHYEAR">
@@ -77,13 +80,18 @@
 				<div id="SEX">
                     <?php
                     $ERROR='';
+                    $sex='';
                     if (!empty($messages['sex'])) {
                         print($messages['sex']);
                         $ERROR='error';
-                    }?>
-                Pol:   <span class="<?php print $ERROR?>">
-                            <input type="radio" value="M" name="sex"<?php if($values['sex']=='M') {print'checked';}?> >Myjchina
-                            <input type="radio" value="F" name="sex"<?php if($values['sex']=='F') {print'checked';}?> >Femka
+                    }
+                    if(!empty($values['sex'])){
+                        $sex=$values['sex'];
+                    }
+                    ?>
+                Pol:    <span class="<?php print $ERROR?>">
+                            <input type="radio" value="M" name="sex"<?php if($sex=='M') {print'checked';} ?> >Myjchina
+                            <input type="radio" value="F" name="sex"<?php if($sex=='F') {print'checked';} ?> >Femka
                     </span>
                 </div>
                 </br>
@@ -97,9 +105,11 @@
                     ?>
                     Konechnosti:<?php
                     $select_limbs=array(1=>'',2=>'',2=>'',3=>'',4=>'');
-                    for($s=1;$s<=4;$s++){
-                        if($values['limbs']==$s){
-                            $select_limbs[$s]='checked';break;
+                    if(!empty($values['limbs'])){
+                        for($s=1;$s<=4;$s++){
+                            if($values['limbs']==$s){
+                                $select_limbs[$s]='checked';break;
+                            }
                         }
                     }
                     ?>
@@ -153,31 +163,45 @@
                     <div id="biography">
                         <?php
                         $ERROR='';
+                        $BIO='';
                         if (!empty($messages['biography'])) {
                             print($messages['biography']);
                             $ERROR='error';
                         }
+                        if(!empty($values['biography'])){
+                            $BIO=$values['biography'];
+                        }
                         ?>
                         <p class="<?php print $ERROR?>" >
-                            <textarea cols="45" name="biography" placeholder="Tyt doljna bit biogrifi9 no ee net...Pochemy?!"><?php if($values['biography']){print $values['biography'];} ?></textarea>
+                            <textarea cols="45" name="biography" placeholder="Tyt doljna bit biogrifi9 no ee net...Pochemy?!"><?php if($BIO!='')print $BIO;?></textarea>
                         </p>
                     </div>
                 </br>
                     <div id="Consent"  >
                     <?php
                     $ERROR='';
+                    $consent='';
                     if (!empty($messages['consent'])) {
                         print($messages['consent']);
                         $ERROR='error';
                     }
+                    if(!empty($values['consent'])){
+                        $consent='checked';
+                    }
                     ?>
                     <span class="<?php print $ERROR?>" >Esli Lubish Mamo4ky to postav galo4ky:
-					    <input type="checkbox" name="consent"  value="yes" <?php if($values['consent']=='yes') {print'checked';}?> >
+					    <input type="checkbox" name="consent"  value="yes" <?php print $consent?>>
                     </span>
                 </div>
                 </br>
-				<input type="submit" value="Отправить">
+                <input type="submit" value="Отправить">
+				<input value="войти" type="button" onclick="location.href='login.php'" />
 			</form>
+            <?php   
+                    if(!empty($_SESSION['login'])){
+                        print('<form method="POST" action="login.php"><input type="submit" name="exit" value="Выход"></form>');
+                    }
+                ?>
 		</div>	
 	</body>
 </html>
