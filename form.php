@@ -9,7 +9,7 @@
 		<div class="Form">
 			<?php if(empty($_SERVER['PHP_AUTH_USER']) && empty($_SERVER['PHP_AUTH_PW'])){
             print('<body link="red" vlink="white" alink="white" bgcolor="white" <p><a href="admin.php">Вы являетесь администратором?</a></p> </body>');
-        } else {print('<p><a href="admin.php">Вернуться к админу ?</a></p>'); }?>     
+        } else {print('<body link="red" vlink="white" alink="white" bgcolor="white" <p><a href="admin.php">Вернуться к администрированию?</a></p> </body>'); }?>     
         <div id="events">
 			<div id="events">
 				<p>Zapoln9q Formy ti yyyyyyyyy</p>
