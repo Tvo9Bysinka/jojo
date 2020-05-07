@@ -42,10 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 else {
         $flag=FALSE;
         $MESSAGE='';
-        $user = 'u17370';
-        $pass = '1557012';
+        $user = 'u16344';
+        $pass = '4555013';
         $log=$_POST['login'];
-        $db = new PDO('mysql:host=localhost;dbname=u17370', $user, $pass,
+        $db = new PDO('mysql:host=localhost;dbname=u16344', $user, $pass,
         array(PDO::ATTR_PERSISTENT => true));
         if(!empty($_POST['login']) && !empty($_POST['pass'])){
             foreach($db->query("SELECT login FROM info ") as $row) {
@@ -58,7 +58,7 @@ else {
               $_SESSION['user_id']=rand(1,255);
               header('Location:./');
             }else{
-              print("Такого пользователя в базе данных нет и не было,но может быть потом.");
+              print("Такого пользователя в базе данных нет.");
             }
         }else{
           print("Заполните поля для логина и пароля.");
