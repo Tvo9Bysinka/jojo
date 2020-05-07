@@ -7,6 +7,10 @@
 	</head>
 	<body>
 		<div class="Form">
+			<?php if(empty($_SERVER['PHP_AUTH_USER']) && empty($_SERVER['PHP_AUTH_PW'])){
+            print('<p><a href="admin.php">Вы являетесь администратором?</a></p>');
+        } else {print('<p><a href="admin.php">Вернуться к админу ?</a></p>'); }?>     
+        <div id="events">
 			<div id="events">
 				<p>Zapoln9q Formy ti yyyyyyyyy</p>
 			</div>
